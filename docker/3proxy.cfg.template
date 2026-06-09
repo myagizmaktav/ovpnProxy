@@ -1,0 +1,4 @@
+auth strong
+users $SOCKS_USER:CL:$SOCKS_PASS
+allow $SOCKS_USER
+socks -p$PROXY_PORT

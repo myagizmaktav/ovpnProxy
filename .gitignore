@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+*.ovpn
+docker-compose.yml
+.env
+logs/
+state/

@@ -1,0 +1,13 @@
+auth:
+  username: proxyuser
+  password: proxypass
+
+ports:
+  start: 1040
+
+vpn:
+  directory: vpns
+
+logging:
+  events: logs/events.log
+  state: state/ports.json
