@@ -8,6 +8,10 @@ SOCKS_PASS="${SOCKS_PASS:-proxypass}"
 
 mkdir -p /logs
 
+# Create OpenVPN auth file for automated login
+echo -e "${SOCKS_USER}\n${SOCKS_PASS}" > /tmp/vpn_auth.txt
+chmod 600 /tmp/vpn_auth.txt
+
 cat > /etc/3proxy/3proxy.cfg <<EOF
 auth strong
 users ${SOCKS_USER}:CL:${SOCKS_PASS}
@@ -23,7 +27,7 @@ trap 'kill ${PROXY_PID} >/dev/null 2>&1 || true' INT TERM EXIT
 echo "[$(date -u +'%Y-%m-%d %H:%M:%S UTC')] VPN_START file=${VPN_FILE} port=${PROXY_PORT}" >> /logs/events.log
 
 set +e
-openvpn --config "${VPN_FILE}" --verb 3 2>&1 | while IFS= read -r line; do
+openvpn --config "${VPN_FILE}" --auth-user-pass /tmp/vpn_auth.txt --verb 3 2>&1 | while IFS= read -r line; do
   echo "$line" >> /logs/openvpn.log
   case "$line" in
     *"Initialization Sequence Completed"*)
