@@ -1,0 +1,41 @@
+services:
+  vpn_nl971_nordvpn_com_udp:
+    build:
+      context: https://github.com/myagizmaktav/ovpnProxy.git#main
+      dockerfile: docker/Dockerfile
+    container_name: ovpnproxy-nl971_nordvpn_com_udp
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    ports:
+      - "1040:1080"
+    environment:
+      VPN_FILE: /vpns/nl971.nordvpn.com.udp.ovpn
+      PROXY_PORT: 1080
+      SOCKS_USER: ${SOCKS_USER:-proxyuser}
+      SOCKS_PASS: ${SOCKS_PASS:-proxypass}
+    volumes:
+      - ./vpns:/vpns:ro
+      - ./logs:/logs
+  vpn_tr52_nordvpn_com_tcp:
+    build:
+      context: https://github.com/myagizmaktav/ovpnProxy.git#main
+      dockerfile: docker/Dockerfile
+    container_name: ovpnproxy-tr52_nordvpn_com_tcp
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    ports:
+      - "1041:1080"
+    environment:
+      VPN_FILE: /vpns/tr52.nordvpn.com.tcp.ovpn
+      PROXY_PORT: 1080
+      SOCKS_USER: ${SOCKS_USER:-proxyuser}
+      SOCKS_PASS: ${SOCKS_PASS:-proxypass}
+    volumes:
+      - ./vpns:/vpns:ro
+      - ./logs:/logs
